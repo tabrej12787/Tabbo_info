@@ -1,8 +1,8 @@
 import requests
-import json
 import os
+import json
 import time
-import sys
+import getpass
 from colorama import Fore, init
 
 init(autoreset=True)
@@ -11,31 +11,52 @@ AUTH_SERVER = "https://tabbo-auth.vercel.app/api/auth"
 LOOKUP_API = "https://tabbo-proxy.vercel.app/api/search?mobile="
 
 USERS_FILE = "users.json"
-LOG_FILE = "logs.json"
 
 
 def clear():
-    os.system("clear")
+    os.system("cls" if os.name == "nt" else "clear")
 
 
-def load_json(file):
+def load_users():
     try:
-        with open(file) as f:
+        with open(USERS_FILE) as f:
             return json.load(f)
     except:
         return {}
 
 
-def save_json(file,data):
-    with open(file,"w") as f:
+def save_users(data):
+    with open(USERS_FILE,"w") as f:
         json.dump(data,f,indent=2)
 
 
-def get_ip():
-    try:
-        return requests.get("https://api.ipify.org").text
-    except:
-        return "Unknown"
+def banner(user,credits):
+
+    clear()
+
+    print(Fore.RED + """
+╔══════════════════════════════════════════════════════╗
+║                                                      ║
+║        ████████╗ █████╗ ██████╗ ██████╗  ██████╗      ║
+║        ╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔═══██╗     ║
+║           ██║   ███████║██████╔╝██████╔╝██║   ██║     ║
+║           ██║   ██╔══██║██╔══██╗██╔══██╗██║   ██║     ║
+║           ██║   ██║  ██║██████╔╝██████╔╝╚██████╔╝     ║
+║           ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═════╝  ╚═════╝      ║
+║                                                      ║
+║              🔎 TABBO NUMBER INFO TOOL 🔎           ║
+║                                                      ║
+╚══════════════════════════════════════════════════════╝
+""")
+
+    print(Fore.CYAN + "╔══════════════ USER INFO ══════════════╗")
+
+    print(Fore.YELLOW + f"   👤 User Name : {user}")
+    print(Fore.YELLOW + f"   💳 Credits   : {credits}")
+
+    print(Fore.CYAN + "╚═══════════════════════════════════════╝\n")
+
+    print(Fore.GREEN + "⭐ Credit By TABBO\n")
 
 
 def login():
@@ -43,13 +64,15 @@ def login():
     clear()
 
     print(Fore.CYAN + """
-🔐 TOOL LOGIN
+╔════════════════════════════════════╗
+            🔐 TOOL LOGIN
+╚════════════════════════════════════╝
 
-Generate password contact admin
+📩 Generate password contact admin
 Telegram : @tabbo73
 """)
 
-    password = input("🔑 Password : ")
+    password = getpass.getpass("🔑 Enter Password : ")
 
     try:
 
@@ -58,47 +81,76 @@ Telegram : @tabbo73
         if r.get("status") != "ok":
 
             print("❌ Invalid password")
-            sys.exit()
+            exit()
 
     except:
 
-        print("❌ Server error")
-        sys.exit()
+        exit()
 
 
-def banner(user,credits):
+def show_results(data, number):
 
-    clear()
-
-    print(Fore.MAGENTA + """
-
-████████╗ █████╗ ██████╗ ██████╗  ██████╗ 
-╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔═══██╗
-   ██║   ███████║██████╔╝██████╔╝██║   ██║
-   ██║   ██╔══██║██╔══██╗██╔══██╗██║   ██║
-   ██║   ██║  ██║██████╔╝██████╔╝╚██████╔╝
-   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═════╝  ╚═════╝
-
+    print(Fore.MAGENTA + f"""
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 RESULTS FOR : {number}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """)
 
+    if not isinstance(data, dict):
+        return
 
-    print(Fore.CYAN + "⚡ TABBO OSINT TOOL\n")
+    for i, key in enumerate(data,1):
 
-    print(Fore.GREEN + f"👤 User : {user}")
-    print(Fore.GREEN + f"💳 Credits : {credits}\n")
+        r = data[key]
+
+        print(Fore.CYAN + "╔══════════════════════════════╗")
+        print(Fore.CYAN + f"         RECORD {i}")
+        print(Fore.CYAN + "╚══════════════════════════════╝")
+
+        if r.get("name") or r.get("fname"):
+
+            print(Fore.YELLOW + "\n👤 PERSONAL INFORMATION")
+
+            if r.get("name"):
+                print("   Name   :", r["name"])
+
+            if r.get("fname"):
+                print("   Father :", r["fname"])
+
+        if r.get("address"):
+
+            print(Fore.YELLOW + "\n🏠 ADDRESS DETAILS")
+            print("   Location :", r["address"])
+
+        if r.get("circle") or r.get("id"):
+
+            print(Fore.YELLOW + "\n📡 NETWORK INFO")
+
+            if r.get("circle"):
+                print("   Circle :", r["circle"])
+
+            if r.get("id"):
+                print("   ID :", r["id"])
+
+        print(Fore.RED + """
+────────────────────────────────────
+📩 Telegram : @tabbo73
+🛑 Credit By TABBO
+────────────────────────────────────
+""")
 
 
 def search(user,users):
 
-    if users[user]["credits"] <= 0:
+    if users[user] <= 0:
 
         print("❌ No credits left")
         input()
         return
 
-    number = input("📱 Mobile Number : ")
+    number = input("📱 Enter Mobile Number : ")
 
-    print("🔎 Searching...\n")
+    print("\n🔎 Searching...\n")
 
     time.sleep(1)
 
@@ -108,42 +160,13 @@ def search(user,users):
 
         data = r.json()
 
-        if isinstance(data,dict):
-
-            for k in data:
-
-                r = data[k]
-
-                if r.get("name"):
-                    print("👤 Name :",r["name"])
-
-                if r.get("fname"):
-                    print("👨 Father :",r["fname"])
-
-                if r.get("address"):
-                    print("🏠 Address :",r["address"])
-
-                if r.get("circle"):
-                    print("📡 Circle :",r["circle"])
-
-                print()
+        show_results(data, number)
 
     except:
         pass
 
-    users[user]["credits"] -= 1
-    users[user]["used"] += 1
-
-    save_json(USERS_FILE,users)
-
-    logs = load_json(LOG_FILE)
-
-    logs[user] = {
-        "ip": users[user]["ip"],
-        "used": users[user]["used"]
-    }
-
-    save_json(LOG_FILE,logs)
+    users[user] -= 1
+    save_users(users)
 
     input("Press Enter...")
 
@@ -152,11 +175,11 @@ def menu(user,users):
 
     while True:
 
-        banner(user,users[user]["credits"])
+        banner(user,users[user])
 
         print("""
-1 Search
-2 Exit
+1️⃣  Single Lookup
+2️⃣  Exit
 """)
 
         op = input("Select : ")
@@ -170,20 +193,13 @@ def menu(user,users):
 
 login()
 
-users = load_json(USERS_FILE)
+users = load_users()
 
-username = input("Username : ")
-
-ip = get_ip()
+username = os.getlogin()
 
 if username not in users:
+    users[username] = 5
 
-    users[username] = {
-        "credits":5,
-        "used":0,
-        "ip":ip
-    }
-
-save_json(USERS_FILE,users)
+save_users(users)
 
 menu(username,users)
