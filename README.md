@@ -1,30 +1,34 @@
 🔎 TABBO NUMBER INFO TOOL
 
-A professional OSINT mobile number lookup tool for Termux / Linux.
-This tool allows you to search mobile numbers and display structured information such as Name, Father Name, Address, Circle, and ID.
+A professional OSINT mobile number lookup tool designed for Termux / Linux environments.
+
+The tool allows users to search mobile numbers and display structured information such as:
+
+- Name
+- Father Name
+- Address
+- Network Circle
+- Unique ID
 
 ---
 
-⭐ Features
+⚡ Features
 
-- 🔎 Mobile Number Lookup
-- 🎨 Colored Professional Terminal UI
-- 💳 Credit Based System
-- 📜 Search History
-- 🧹 Clear History Option
-- 📖 Built-in Guide
-- ℹ️ About Section
-- 🔐 Password Protected Tool
-- 👤 Automatic User Detection
-- 🏠 Structured Address Format
-- ❌ Data Not Found Handling
+Feature| Description
+🔎 Mobile Lookup| Search mobile number information
+🎨 Colored UI| Professional terminal interface
+💳 Credit System| Each user has limited search credits
+📜 Search History| View previously searched numbers
+🧹 Clear History| Reset search history
+📖 Guide| Built-in usage guide
+🔐 Password Protection| Secure login system
 
 ---
 
 📦 Requirements
 
 - Python 3
-- Termux / Linux / macOS / Windows
+- Termux / Linux
 - Internet Connection
 
 Install required libraries:
@@ -35,39 +39,55 @@ pip install requests colorama
 
 🚀 Installation (Termux)
 
+Update packages
+
 pkg update -y
+
+Install dependencies
+
 pkg install git python -y
+
+Clone repository
+
 git clone https://github.com/tabrej12787/tabbo-info-tool.git
+
+Enter project folder
+
 cd tabbo-info-tool
+
+Install Python libraries
+
 pip install requests colorama
 
-Create required files:
+Create required files
 
 echo {} > users.json
 echo [] > history.json
 
-Run the tool:
+Run the tool
 
 python tabbo.py
 
 ---
 
-🔐 Login
+🔐 Authentication
 
-The tool requires a password authentication.
+The tool requires password authentication before usage.
 
-If you don't have the password, contact:
+If you do not have access, contact the administrator:
 
 📩 Telegram: @tabbo73
 
 ---
 
-💳 Credits System
+💳 Credit System
 
-- Each user gets 5 default credits
-- Every search costs 1 credit
+Each user receives 5 default credits.
 
-When credits reach 0, the tool will show:
+Action| Credits Used
+Mobile Search| 1 Credit
+
+When credits are exhausted the tool will display:
 
 YOUR CREDITS FINISHED
 Contact Admin For More Credits
@@ -81,13 +101,12 @@ RESULTS FOR : 9000000000
 
 RECORD 1
 
-👤 Name : Rahul Sharma
-👨 Father : Mahesh Sharma
+👤 Name : Demo User
+👨 Father : Example Person
 
 🏠 ADDRESS DETAILS
-Relation : S/O Mahesh Sharma
-Village  : Sample Village
-City     : Demo City
+Village  : Demo Village
+City     : Sample City
 District : Example District
 State    : Example State
 Pincode  : 000000
@@ -95,14 +114,13 @@ Pincode  : 000000
 📡 Circle : Demo Network
 🆔 ID : 123456789012
 
-The above information is only sample data for demonstration.
-
 ---
 
 ⚠️ Disclaimer
 
-This tool is created for educational and research purposes only.
-Do not misuse the tool for illegal activities.
+This tool is created strictly for educational and research purposes.
+
+The developer is not responsible for misuse or illegal activities performed using this tool.
 
 ---
 
@@ -110,8 +128,8 @@ Do not misuse the tool for illegal activities.
 
 TABBO
 
-📩 Telegram: https://t.me/tabbo73
+Telegram: https://t.me/tabbo73
 
 ---
 
-⭐ If you like this project, consider giving it a star on GitHub.
+⭐ If you found this project useful, consider giving it a star on GitHub.
