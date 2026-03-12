@@ -36,37 +36,43 @@ pip install requests colorama
 
 ---
 
-🚀 Installation (Termux)
+## 🚀 Installation (Termux)
 
-#1️⃣ Update packages
-``
+### 1️⃣ Update packages
+```bash
 pkg update -y
-``
-#2️⃣ Install dependencies
-``
+```
+
+### 2️⃣ Install dependencies
+```bash
 pkg install git python -y
-``
-#3️⃣ Clone repository
-``
+```
+
+### 3️⃣ Clone repository
+```bash
 git clone https://github.com/tabrej12787/tabbo-info-tool.git
-``
-#4️⃣ Enter project folder
-``
+```
+
+### 4️⃣ Enter project folder
+```bash
 cd tabbo-info-tool
-``
-#5️⃣ Install Python libraries
-``
+```
+
+### 5️⃣ Install Python libraries
+```bash
 pip install requests colorama
-``
-#6️⃣ Create required files
-``
+```
+
+### 6️⃣ Create required files
+```bash
 echo {} > users.json
 echo [] > history.json
-``
-#7️⃣ Run the tool
-``
+```
+
+### 7️⃣ Run the tool
+```bash
 python tabbo.py
-``
+```
 ---
 
 🔐 Authentication
