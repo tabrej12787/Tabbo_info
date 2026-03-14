@@ -13,10 +13,6 @@ AUTH_SERVER = base64.b64decode(
 "aHR0cHM6Ly90YWJiby1hdXRoLnZlcmNlbC5hcHAvYXBpL2F1dGg="
 ).decode()
 
-LOOKUP_API = base64.b64decode(
-"aHR0cHM6Ly90YWJiby1wcm94eS52ZXJjZWwuYXBwL2FwaS9zZWFyY2g/bW9iaWxlPQ=="
-).decode()
-
 HISTORY_FILE = "history.json"
 LIMIT_FILE = "limit.json"
 
@@ -25,6 +21,33 @@ DAILY_LIMIT = 15
 
 def clear():
     os.system("cls" if os.name == "nt" else "clear")
+
+
+def banner(user, remaining):
+
+    clear()
+
+    print(Fore.RED + r"""
+
+████████╗ █████╗ ██████╗ ██████╗  ██████╗ 
+╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔═══██╗
+   ██║   ███████║██████╔╝██████╔╝██║   ██║
+   ██║   ██╔══██║██╔══██╗██╔══██╗██║   ██║
+   ██║   ██║  ██║██████╔╝██████╔╝╚██████╔╝
+   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═════╝  ╚═════╝
+
+        🔎 TABBO NUMBER INFO TOOL 🔎
+
+""")
+
+    print(Fore.CYAN + "┌─────────────────────────────┐")
+    print(Fore.CYAN + "          USER INFO")
+    print(Fore.CYAN + "└─────────────────────────────┘")
+
+    print(Fore.GREEN + f"👤 User Name : {user}")
+    print(Fore.YELLOW + f"⭐ Credits   : {remaining}\n")
+
+    print(Fore.GREEN + "⭐ Credit By TABBO\n")
 
 
 def load_json(file, default):
@@ -55,23 +78,6 @@ def check_limit(user):
     save_json(LIMIT_FILE, data)
 
     return data
-
-
-def banner(user, remaining):
-
-    clear()
-
-    print(Fore.RED + """
-
-╔══════════════════════════════════════════════════════╗
-║        🔎 TABBO NUMBER INFO TOOL 🔎                 ║
-╚══════════════════════════════════════════════════════╝
-""")
-
-    print(Fore.YELLOW + "⭐ CREDIT BY TABBO\n")
-
-    print(Fore.GREEN + f"👤 USER : {user}")
-    print(Fore.CYAN + f"🔎 REMAINING SEARCH : {remaining}\n")
 
 
 def login():
@@ -184,7 +190,13 @@ def search(user):
     time.sleep(1)
 
     try:
-        r = requests.get(LOOKUP_API + number)
+
+        day = datetime.now().day
+        key = "tabbo786" + str(day)
+
+        url = hidden_api() + number + "&k=" + key
+
+        r = requests.get(url)
         result = r.json()
 
         show_results(result, number)
@@ -255,6 +267,19 @@ def menu(user):
 
         elif op == "4":
             sys.exit()
+
+
+# hidden proxy api
+
+def hidden_api():
+
+    p1="aHR0cHM6Ly90YW"
+    p2="Jiby1wcm94eS52"
+    p3="ZXJjZWwuYXBwL2"
+    p4="FwaS9zZWFyY2g/"
+    p5="bW9iaWxlPQ=="
+
+    return base64.b64decode(p1+p2+p3+p4+p5).decode()
 
 
 login()
