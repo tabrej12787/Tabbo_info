@@ -29,7 +29,7 @@ def banner(user, remaining):
 
     print(Fore.RED + r"""
 
-████████╗ █████╗ ██████╗ ██████╗  ██████╗ 
+████████╗ █████╗ ██████╗ ██████╗  ██████╗
 ╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔═══██╗
    ██║   ███████║██████╔╝██████╔╝██║   ██║
    ██║   ██╔══██║██╔══██╗██╔══██╗██║   ██║
@@ -45,7 +45,6 @@ def banner(user, remaining):
 
     print(Fore.GREEN + f"👤 User Name : {user}")
     print(Fore.YELLOW + f"⭐ Credits   : {remaining}\n")
-
     print(Fore.GREEN + "⭐ Credit By TABBO\n")
 
 
@@ -113,13 +112,21 @@ def show_results(data, number):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """)
 
-    if not isinstance(data, dict) or len(data) == 0:
+    # FIX BOOL ERROR
+    if not isinstance(data, dict):
+        print(Fore.RED + "\n❌ INVALID API RESPONSE\n")
+        return
+
+    if len(data) == 0:
         print(Fore.RED + "\n❌ DATA NOT FOUND\n")
         return
 
     for i, key in enumerate(data, 1):
 
         r = data[key]
+
+        if not isinstance(r, dict):
+            continue
 
         print(Fore.BLUE + "╔══════════════════════════════╗")
         print(Fore.BLUE + f"         RECORD {i}")
@@ -239,9 +246,7 @@ def history():
 def clear_history():
 
     save_json(HISTORY_FILE, [])
-
     print("History cleared")
-
     input()
 
 
