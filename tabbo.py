@@ -20,7 +20,7 @@ LIMIT_FILE = "limit.json"
 DAILY_LIMIT = 15
 
 
-# 🔐 Hidden Proxy API (split + base64)
+# 🔐 Hidden Proxy API
 def hidden_api():
 
     a1="aHR0c"
@@ -52,7 +52,7 @@ def banner(user, remaining):
     clear()
 
     print(Fore.RED + r"""
-████████╗ █████╗ ██████╗ ██████╗  ██████╗ 
+████████╗ █████╗ ██████╗ ██████╗  ██████╗
 ╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔═══██╗
    ██║   ███████║██████╔╝██████╔╝██║   ██║
    ██║   ██╔══██║██╔══██╗██╔══██╗██║   ██║
@@ -192,60 +192,64 @@ def search(user):
         input("Press Enter...")
         return
 
-    number=input("📱 Enter Mobile Number : ").strip()
+    number = input("📱 Enter Mobile Number : ").strip()
 
     print("🔎 Searching...\n")
     time.sleep(1)
 
     try:
 
-        day=datetime.now().day
-        key="tabbo786"+str(day)
+        day = datetime.now().day
+        key = "tabbo786" + str(day)
 
-        url=hidden_api()+number+"&k="+key
+        url = hidden_api() + number + "&k=" + key
 
-        r=requests.get(url)
+        headers = {
+            "User-Agent": "Mozilla/5.0"
+        }
 
-        result=r.json()
+        r = requests.get(url, headers=headers, timeout=10)
 
-        show_results(result,number)
+        result = r.json()
 
-        history=load_json(HISTORY_FILE,[])
+        show_results(result, number)
+
+        history = load_json(HISTORY_FILE, [])
         history.append(number)
-        save_json(HISTORY_FILE,history)
+        save_json(HISTORY_FILE, history)
 
-    except:
+    except Exception as e:
 
-        print("API Error")
+        print("API Error:", e)
 
-    data[user]["count"]+=1
-    save_json(LIMIT_FILE,data)
+    data[user]["count"] += 1
+    save_json(LIMIT_FILE, data)
 
-    remaining=DAILY_LIMIT-data[user]["count"]
+    remaining = DAILY_LIMIT - data[user]["count"]
 
-    print(Fore.YELLOW+f"\n🔎 Remaining Searches : {remaining}")
+    print(Fore.YELLOW + f"\n🔎 Remaining Searches : {remaining}")
 
     input("Press Enter...")
 
 
 def history():
 
-    data=load_json(HISTORY_FILE,[])
+    data = load_json(HISTORY_FILE, [])
 
-    print(Fore.CYAN+"\n📜 SEARCH HISTORY\n")
+    print(Fore.CYAN + "\n📜 SEARCH HISTORY\n")
 
-    if len(data)==0:
+    if len(data) == 0:
         print("No history")
 
-    for i,n in enumerate(data,1):
-        print(Fore.YELLOW+f"{i}. {n}")
+    for i, n in enumerate(data, 1):
+        print(Fore.YELLOW + f"{i}. {n}")
 
     input("\nPress Enter...")
 
 
 def clear_history():
 
-    save_json(HISTORY_FILE,[])
+    save_json(HISTORY_FILE, [])
     print("History cleared")
     input()
 
@@ -254,17 +258,17 @@ def menu(user):
 
     while True:
 
-        data=check_limit(user)
-        remaining=DAILY_LIMIT-data[user]["count"]
+        data = check_limit(user)
+        remaining = DAILY_LIMIT - data[user]["count"]
 
-        banner(user,remaining)
+        banner(user, remaining)
 
         print(Fore.GREEN+"1️⃣  Search Number")
         print(Fore.CYAN+"2️⃣  History")
         print(Fore.MAGENTA+"3️⃣  Clear History")
         print(Fore.RED+"4️⃣  Exit\n")
 
-        op=input("Select Option : ")
+        op = input("Select Option : ")
 
         if op=="1":
             search(user)
@@ -281,6 +285,6 @@ def menu(user):
 
 login()
 
-username=os.getlogin()
+username = os.getlogin()
 
 menu(username)
