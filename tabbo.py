@@ -111,66 +111,24 @@ def show_results(data, number):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """)
 
-    if not isinstance(data, dict):
-        print(Fore.RED + "\n❌ INVALID API RESPONSE\n")
-        return
-
-    if len(data) == 0:
+    if not data.get("success"):
         print(Fore.RED + "\n❌ DATA NOT FOUND\n")
         return
 
-    for i, key in enumerate(data, 1):
+    records = data.get("result", [])
 
-        r = data[key]
-
-        if not isinstance(r, dict):
-            continue
+    for i, r in enumerate(records, 1):
 
         print(Fore.BLUE + "╔══════════════════════════════╗")
         print(Fore.BLUE + f"         RECORD {i}")
         print(Fore.BLUE + "╚══════════════════════════════╝")
 
-        if r.get("name"):
-            print(Fore.YELLOW + "👤 Name : " + Fore.CYAN + r["name"])
-
-        if r.get("fname"):
-            print(Fore.YELLOW + "👨 Father : " + Fore.CYAN + r["fname"])
-
-        if r.get("address"):
-
-            print(Fore.GREEN + "\n🏠 ADDRESS DETAILS")
-
-            addr = r["address"].split("!")
-
-            labels = [
-                "Relation",
-                "Village",
-                "City",
-                "District",
-                "State",
-                "Pincode"
-            ]
-
-            for i, part in enumerate(addr):
-
-                part = part.strip()
-
-                if part and i < len(labels):
-
-                    print(
-                        Fore.YELLOW + "   " + labels[i] +
-                        Fore.MAGENTA + " : " +
-                        Fore.CYAN + part
-                    )
-
-        if r.get("circle"):
-            print(Fore.GREEN + "\n📡 Circle : " + Fore.CYAN + r["circle"])
-
-        if r.get("alt"):
-            print(Fore.YELLOW + "📞 Alternate : " + Fore.CYAN + r["alt"])
-
-        if r.get("id"):
-            print(Fore.MAGENTA + "🆔 ID : " + Fore.CYAN + r["id"])
+        print(Fore.YELLOW + "👤 Name : " + Fore.CYAN + str(r.get("name","")))
+        print(Fore.YELLOW + "👨 Father : " + Fore.CYAN + str(r.get("father_name","")))
+        print(Fore.GREEN + "🏠 Address : " + Fore.CYAN + str(r.get("address","")))
+        print(Fore.GREEN + "📡 Circle : " + Fore.CYAN + str(r.get("circle","")))
+        print(Fore.YELLOW + "📞 Alternate : " + Fore.CYAN + str(r.get("alt_mobile","")))
+        print(Fore.MAGENTA + "🆔 ID : " + Fore.CYAN + str(r.get("id_number","")))
 
         print(Fore.RED + """
 ────────────────────────────────────
